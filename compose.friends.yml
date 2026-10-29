@@ -1,0 +1,28 @@
+services:
+  game:
+    build:
+      context: .
+      dockerfile: Dockerfile.friends
+    restart: unless-stopped
+    environment:
+      PUBLIC_ORIGIN: https://${GAME_DOMAIN:?Set GAME_DOMAIN to your domain}
+    volumes:
+      - ./apps/core/image:/app/apps/core/image:ro
+      - ./apps/core/audio:/app/apps/core/audio:ro
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      - game
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      GAME_DOMAIN: ${GAME_DOMAIN:?Set GAME_DOMAIN to your domain}
+    volumes:
+      - ./friends-server/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+volumes:
+  caddy_data:
+  caddy_config:

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="format-detection" content="telephone=no">
+  <title>无名杀 · 同袍</title>
+  <!-- IMPORTMAP -->
+  <!-- STYLES -->
+  <style>
+    #friends-loading{position:fixed;inset:0;z-index:2147483646;display:grid;place-items:center;background:#101722;color:#e9e4d8;font:16px/1.7 system-ui,sans-serif}
+    #friends-loading .boot-card{position:static;width:min(520px,82vw);padding:32px;border:1px solid #a6895255;border-radius:16px;background:#182231;box-sizing:border-box}
+    #friends-loading h1{position:static;font-size:28px;font-weight:600;margin:4px 0 18px;color:#d9bc80}
+    #friends-loading p{position:static;margin:10px 0;color:#c2c9d2}
+    #friends-loading progress{width:100%;height:6px;accent-color:#d9bc80}
+    #friends-loading .boot-actions{position:static;display:flex;gap:20px;margin-top:22px}
+    #friends-loading a,#friends-loading button{position:static;color:#e1c794;background:none;border:0;font:inherit;cursor:pointer;padding:0;text-decoration:underline}
+    #friends-loading pre{position:static;max-height:180px;overflow:auto;white-space:pre-wrap;word-break:break-word;font:12px/1.6 monospace;color:#e6b1a0}
+  </style>
+</head>
+<body>
+  <section id="friends-loading" aria-live="polite">
+    <div class="boot-card">
+      <span>无名杀 · 同袍</span>
+      <h1 id="boot-title">正在进入联机大厅</h1>
+      <p id="boot-status">正在准备游戏资源…</p>
+      <progress id="boot-progress"></progress>
+      <p id="boot-cache-status">首次载入后保存游戏资源，之后优先使用本地缓存。</p>
+      <pre id="boot-error" hidden></pre>
+      <div class="boot-actions"><a href="/friends/">返回房间配置</a><button id="boot-retry" hidden>重新加载</button><button id="boot-clear-cache" hidden>重新下载资源</button></div>
+    </div>
+  </section>
+  <!-- MODULES -->
+  <!-- CACHE -->
+  <script src="/friends/audio.js"></script>
+  <script src="/friends/boot.js"></script>
+</body>
+</html>

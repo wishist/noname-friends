@@ -1,0 +1,7 @@
+.git
+**/node_modules
+apps/core/audio
+apps/core/image
+friends-tools
+docs
+*.log

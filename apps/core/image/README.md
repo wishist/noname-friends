@@ -1,0 +1,1 @@
+This source release does not distribute upstream image assets. See the repository's ASSETS.md for the scope and local asset directory layout. Only install images you are authorized to use and distribute.

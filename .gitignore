@@ -1,0 +1,65 @@
+# Dependencies and generated output
+node_modules/
+dist/
+dist-types/
+output/
+.runtime/
+*.log
+*.tsbuildinfo
+
+# Local settings, credentials, browser data and temporary invitations
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+.wrangler/
+.cloudflared/
+/本次公网联机.url
+/好友版说明.md
+/*.url
+/friends-*.jpg
+/friends-*.png
+.idea/
+.vscode/
+.agents/
+.codex/
+
+# Media are not distributed by this source release.
+# Keep readme placeholders; authorized local media stay untracked.
+apps/core/image/*
+!apps/core/image/README.md
+apps/core/audio/*
+!apps/core/audio/README.md
+apps/core/font/*
+!apps/core/font/README.md
+*.jpg
+*.jpeg
+*.png
+*.webp
+*.gif
+*.avif
+*.ico
+*.mp3
+*.ogg
+*.wav
+*.flac
+*.m4a
+*.mp4
+*.woff
+*.woff2
+*.ttf
+*.otf
+*.eot
+
+# OS metadata
+._*
+.Spotlight-V100
+.Trashes
+.DS_Store
+.DS_Store?
+ehthumbs.db
+Thumbs.db
+desktop.ini

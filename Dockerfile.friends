@@ -1,0 +1,14 @@
+FROM node:24-alpine
+WORKDIR /app
+COPY friends-server/package*.json ./friends-server/
+RUN cd friends-server && npm ci --omit=dev --ignore-scripts --no-audit --no-fund
+# Build the engine before docker build; see friends-server/README.md.
+COPY apps/core/dist ./apps/core/dist
+COPY friends-ui ./friends-ui
+COPY friends-server/server.mjs friends-server/relay.mjs friends-server/preload.js ./friends-server/
+COPY LICENSE NOTICE.md CHANGELOG.md ASSETS.md ./
+ENV NODE_ENV=production PORT=8090 HOST=0.0.0.0 GAME_DIR=/app/apps/core/dist
+USER node
+EXPOSE 8090
+HEALTHCHECK --interval=30s --timeout=5s CMD node -e "fetch('http://127.0.0.1:8090/healthz').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
+CMD ["node", "friends-server/server.mjs"]

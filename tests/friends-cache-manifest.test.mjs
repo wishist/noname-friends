@@ -1,0 +1,33 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { mkdtemp, mkdir, writeFile, rm, utimes } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { createCacheManifest } from '../friends-tools/cache-manifest.mjs';
+
+test('cache manifest covers dynamic packs and adapter, excludes pages and source, and versions by content', async t => {
+  const dir = await mkdtemp(join(tmpdir(),'friends-manifest-'));
+  t.after(()=>rm(dir,{recursive:true,force:true}));
+  for (const folder of ['noname','character','src','_virtual']) await mkdir(join(dir,folder));
+  const preload = join(dir,'adapter.js');
+  await writeFile(preload,'export default () => {};');
+  await writeFile(join(dir,'noname.js'),'export const game = {};');
+  await writeFile(join(dir,'noname/entry.js'),'import "../noname.js";');
+  await writeFile(join(dir,'character/new-pack.js'),'export const type = "character";');
+  await writeFile(join(dir,'_virtual/helper.js'),'export const helper = true;');
+  await writeFile(join(dir,'src/private.js'),'not a runtime asset');
+  await writeFile(join(dir,'index.html'),'<h1>entry</h1>');
+  const first = await createCacheManifest(dir,preload);
+  assert.match(first.version,/^[a-f0-9]{64}$/);
+  assert.deepEqual(Object.keys(first.assets).sort(),['/_virtual/helper.js','/character/new-pack.js','/noname.js','/noname/entry.js','/preload.js']);
+  const later = new Date(Date.now()+30000);
+  await utimes(join(dir,'noname/entry.js'),later,later);
+  assert.deepEqual(await createCacheManifest(dir,preload),first);
+  await writeFile(join(dir,'character/new-pack.js'),'export const updated = true;');
+  const changed = await createCacheManifest(dir,preload);
+  assert.notEqual(changed.version,first.version);
+  assert.notEqual(changed.assets['/character/new-pack.js'],first.assets['/character/new-pack.js']);
+  assert.equal(changed.assets['/noname/entry.js'],first.assets['/noname/entry.js']);
+  await writeFile(preload,'export default () => "updated";');
+  assert.notEqual((await createCacheManifest(dir,preload)).assets['/preload.js'],first.assets['/preload.js']);
+});

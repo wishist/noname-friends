@@ -1,0 +1,1 @@
+This source release does not distribute upstream music, voice, or sound assets. See the repository's ASSETS.md for the scope and local asset directory layout. Only install audio you are authorized to use and distribute.
